@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Controls: size + sort + dir -->
+<!-- firma del fragmento con parámetros -->
+<div th:fragment="pageControls(actionUrl, size, sort, dir)"
+     class="mb-3">
+  <form class="row g-2 align-items-end"
+        th:action="@{${actionUrl}}"
+        method="get">
+
+    <!-- al cambiar size/sort/dir volvemos a la primera página -->
+    <input type="hidden" name="page" value="0"/>
+
+    <div class="col-auto">
+      <label class="form-label mb-0">Rows</label>
+      <select class="form-select" name="size" onchange="this.form.submit()">
+        <option value="5"  th:selected="${size == 5}">5</option>
+        <option value="10" th:selected="${size == 10}">10</option>
+        <option value="20" th:selected="${size == 20}">20</option>
+        <option value="50" th:selected="${size == 50}">50</option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <label class="form-label mb-0">Sort by</label>
+      <select class="form-select" name="sort" onchange="this.form.submit()">
+        <option value="name"     th:selected="${sort == 'name'}">Name</option>
+        <option value="category" th:selected="${sort == 'category'}">Category</option>
+        <option value="price"    th:selected="${sort == 'price'}">Price</option>
+
+        <!-- Habilítalo solo si tu API soporta restaurant.name -->
+        <option value="restaurant.name" th:selected="${sort == 'restaurant.name'}">
+          Restaurant
+        </option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <label class="form-label mb-0">Direction</label>
+      <select class="form-select" name="dir" onchange="this.form.submit()">
+        <option value="asc"  th:selected="${dir == 'asc'}">ASC</option>
+        <option value="desc" th:selected="${dir == 'desc'}">DESC</option>
+      </select>
+    </div>
+
+  </form>
+</div>
+
+<!-- Pagination -->
+<nav th:fragment="pager(actionUrl, pageObj, size, sort, dir)"
+     class="mt-4"
+     th:if="${pageObj.totalPages > 1}">
+  <ul class="pagination justify-content-center">
+
+    <!-- Previous -->
+    <li class="page-item" th:classappend="${pageObj.first} ? 'disabled'">
+      <a class="page-link"
+         th:href="@{${actionUrl}(page=${pageObj.number - 1}, size=${size}, sort=${sort}, dir=${dir})}">
+        Previous
+      </a>
+    </li>
+
+    <!-- page numbers -->
+    <li class="page-item"
+        th:each="i : ${#numbers.sequence(0, pageObj.totalPages - 1)}"
+        th:classappend="${i == pageObj.number} ? 'active'">
+      <a class="page-link"
+         th:text="${i + 1}"
+         th:href="@{${actionUrl}(page=${i}, size=${size}, sort=${sort}, dir=${dir})}">
+      </a>
+    </li>
+
+    <!-- Next -->
+    <li class="page-item" th:classappend="${pageObj.last} ? 'disabled'">
+      <a class="page-link"
+         th:href="@{${actionUrl}(page=${pageObj.number + 1}, size=${size}, sort=${sort}, dir=${dir})}">
+        Next
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+</body>
+</html>

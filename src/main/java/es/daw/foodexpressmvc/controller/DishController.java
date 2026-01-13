@@ -28,12 +28,21 @@ public class DishController {
     @GetMapping("/dishes")
     public String listDishes(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "5") int size,
+                             @RequestParam(defaultValue = "name") String sort,
+                             @RequestParam(defaultValue = "asc") String dir,
                              Model model) {
 
-        PageResponse<DishResponseDTO> dishPage = dishService.getAllDishes(page, size);
+        PageResponse<DishResponseDTO> dishPage = dishService.getAllDishes(page, size,sort,dir);
 
         model.addAttribute("page", dishPage);
+
         model.addAttribute("dishes", dishPage.getContent());
+
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
+        model.addAttribute("size", size);
+
+
 
         return "dishes/dishes";
     }
