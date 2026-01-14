@@ -46,6 +46,8 @@ public class DishService {
 
     private final WebClient webClientAPI;
 
+    // Puedo recibir un map con los sorts y dirs correspondientes...
+    // Montario en la uri tantos sort con su dir como campos haya seleccionado...
     public PageResponse<DishResponseDTO> getAllDishes(int page, int size, String sort, String dir ){
 
         //try {

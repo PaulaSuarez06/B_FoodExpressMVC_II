@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class DishController {
@@ -32,16 +34,28 @@ public class DishController {
                              @RequestParam(defaultValue = "asc") String dir,
                              Model model) {
 
+        // Pendiente!!!! la lista permite seleccionar más de un campo para ordenar...
+        // Cómo lo recibo en el endpoint?
+
+        // Qué estructura de datos uso? un array, una lista...
+        // Si todos los campos se ordenar por el mismo criterio(dir) o no???
+        // Y si cada campo viene del cliente con su dir??
+        // MAP o bean ...
+
         PageResponse<DishResponseDTO> dishPage = dishService.getAllDishes(page, size,sort,dir);
 
         model.addAttribute("page", dishPage);
 
-        model.addAttribute("dishes", dishPage.getContent());
+        // Parar que la lista de campos por los que ordenar dependa del controlador!!!
+        //model.addAttribute("sortOptions", List.of("name","category","price"));
 
-        model.addAttribute("sort", sort);
-        model.addAttribute("dir", dir);
-        model.addAttribute("size", size);
+//        model.addAttribute("dishes", dishPage.getContent());
+//
+//        model.addAttribute("sort", sort);
+//        model.addAttribute("dir", dir);
+//        model.addAttribute("size", size);
 
+        // Pendiente mandar a vista solo dishPage!!!! (Alejandro)
 
 
         return "dishes/dishes";
