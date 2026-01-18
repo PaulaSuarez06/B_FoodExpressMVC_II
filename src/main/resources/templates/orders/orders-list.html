@@ -17,7 +17,17 @@
 
 <div class="container mt-4">
 
+
     <h2 class="mb-3">Filter Orders</h2>
+
+    <a th:href="@{/orders/new}" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="btn btn-success" >
+        + Create Order
+    </a>
+
+    <button th:if="${!#authorization.expression('hasRole(''ADMIN'')')}"
+            class="btn btn-secondary" disabled>
+        Admin Only
+    </button>
 
     <!-- ERROR MESSAGE -->
     <div th:if="${errorMessage}" class="alert alert-danger">
@@ -78,6 +88,64 @@
             </tr>
             </tbody>
         </table>
+
+        <nav class="mt-4" th:if="${page != null and page.totalPages > 1}">
+            <ul class="pagination justify-content-center">
+
+                <!-- Previous -->
+                <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/orders/search(
+                    status=${filter.status},
+                    userId=${filter.userId},
+                    restaurantId=${filter.restaurantId},
+                    page=${page.number - 1},
+                    size=${page.size},
+                    sort=${sort},
+                    dir=${dir}
+               )}">
+                        Previous
+                    </a>
+                </li>
+
+                <!-- Page numbers -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.number} ? 'active'">
+                    <a class="page-link"
+                       th:text="${i + 1}"
+                       th:href="@{/orders/search(
+                    status=${filter.status},
+                    userId=${filter.userId},
+                    restaurantId=${filter.restaurantId},
+                    page=${i},
+                    size=${page.size},
+                    sort=${sort},
+                    dir=${dir}
+               )}">
+                    </a>
+                </li>
+
+                <!-- Next -->
+                <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{/orders/search(
+                    status=${filter.status},
+                    userId=${filter.userId},
+                    restaurantId=${filter.restaurantId},
+                    page=${page.number + 1},
+                    size=${page.size},
+                    sort=${sort},
+                    dir=${dir}
+               )}">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+
     </div>
 
 </div>

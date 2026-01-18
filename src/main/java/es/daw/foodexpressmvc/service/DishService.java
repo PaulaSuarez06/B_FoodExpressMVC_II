@@ -1,9 +1,6 @@
 package es.daw.foodexpressmvc.service;
 
-import es.daw.foodexpressmvc.dto.DishDTO;
-import es.daw.foodexpressmvc.dto.DishResponseDTO;
-import es.daw.foodexpressmvc.dto.ErrorDTO;
-import es.daw.foodexpressmvc.dto.PageResponse;
+import es.daw.foodexpressmvc.dto.*;
 import es.daw.foodexpressmvc.exception.ConnectionApiRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -94,6 +91,24 @@ public class DishService {
 //            throw new ConnectionApiRestException(e.getMessage());
 //        }
     }
+
+
+
+    public List<DishResponseDTO> findById(Long id){
+
+        List<DishResponseDTO> dtos;
+
+
+        return webClientAPI.get()
+                .uri("/dishes/{restaurantId}", id)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<DishResponseDTO>>() {})
+                .block();
+
+
+    }
+
+
 
     /**
      * Construye un mensaje de error detallado a partir de la información del ErrorDTO recibido desde el API.

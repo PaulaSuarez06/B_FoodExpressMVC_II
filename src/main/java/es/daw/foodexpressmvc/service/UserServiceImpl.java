@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -55,4 +57,25 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
     }
+
+    public Long getUserIdFromPrincipal(Principal principal) {
+
+        if (principal == null) {
+            throw new IllegalStateException("No authenticated user found");
+        }
+
+        String username = principal.getName(); // viene de Spring Security
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new IllegalStateException("User not found for username: " + username)
+                );
+
+        return user.getId();
+    }
+
+
+
+
+
 }
