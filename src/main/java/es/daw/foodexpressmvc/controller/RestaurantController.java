@@ -34,9 +34,14 @@ public class RestaurantController {
         model.addAttribute("restaurant", new RestaurantDTO());
         model.addAttribute("mode","create");
         return "restaurants/restaurant-form";
-    }
 
+        //INICIALIZAMOS CON UN DTO VACIO
+        // LE PASAMOS EL MODE CREATE PARA QUE LO MUESTRE EN EL FORMULARIO Y TENGS CONDICIONES SEA PARA CREAR O EDITAR.
+//            <h2 class="mb-4" th:text="${mode == 'create'}? 'Create Restaurant': 'Edit Restaurant'"></h2>
+    }
+//    RedirectAttributes PARA EVITAR DUPLICADOS
     @PostMapping("/create")
+        //<form th:action="${mode == 'create'}? '/restaurants/create':'/restaurants/update/'+${restaurant.id}"
     public String create(@ModelAttribute("restaurant") RestaurantDTO restaurantDTO,
                          Model model,
                          RedirectAttributes redirectAttributes) {
@@ -46,9 +51,11 @@ public class RestaurantController {
 //        return "restaurants/create-success";
 
         redirectAttributes.addFlashAttribute("restaurant", saved);
+        //el saved es porque manda el objeto  guardado
         redirectAttributes.addFlashAttribute("success",true);
+        //mete una variable de exito-- si hay seccess lo coge la vista
 
-        return "redirect:create-success";
+        return "redirect:create-success"; //este va unido a restaurant
 
 
     }

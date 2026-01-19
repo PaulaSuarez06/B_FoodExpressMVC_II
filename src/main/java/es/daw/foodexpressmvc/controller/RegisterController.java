@@ -29,6 +29,8 @@ public class RegisterController {
     }
 
     @PostMapping
+    //PONGO VALID PORQUE EL DTO TIENE VALIDACIONES
+    //LE PASO AL MODEL EL DTO PARA QUE LO MUESTR EN EL FORMARIO CON .
     public String register(
             @Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO dto,
             BindingResult bindingResult,

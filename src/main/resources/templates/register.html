@@ -32,7 +32,7 @@
 
       <!-- Mensaje general de error del servidor -->
       <div th:if="${errorMessage}" class="alert alert-danger text-center" th:text="${errorMessage}"></div>
-
+<!--LA URL ES REGISTER PARA MANDAR EL POST, Y LE PASO EL OBJETO QUE CREO EN EL CONTROLLER-->
         <form th:action="@{/register}" th:object="${userRegisterDTO}" method="post">
 
             <!-- Username -->
